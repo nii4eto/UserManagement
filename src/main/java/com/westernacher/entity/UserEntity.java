@@ -1,5 +1,6 @@
 package com.westernacher.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,13 +14,13 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class UserEntity {
 
 	private Long id;
 	private String firstName;
 	private String lastName;
 	private String email;
-	private Date dateOfBirth;
+	private LocalDate dateOfBirth;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -60,11 +61,11 @@ public class User {
 
 	@Column(name = "date_of_birth")
 	@Temporal(TemporalType.DATE)
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -77,10 +78,10 @@ public class User {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof User)) {
+        if (!(object instanceof UserEntity)) {
             return false;
         }
-        User other = (User) object;
+        UserEntity other = (UserEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
