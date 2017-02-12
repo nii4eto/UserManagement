@@ -1,16 +1,18 @@
 package com.westernacher.entity;
 
+
+
 import java.time.LocalDate;
-import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import com.westernacher.converter.LocalDateAttributeConverter;
 
 @Entity
 @Table(name = "user")
@@ -60,7 +62,7 @@ public class UserEntity {
 	}
 
 	@Column(name = "date_of_birth")
-	@Temporal(TemporalType.DATE)
+	@Convert(converter=LocalDateAttributeConverter.class)
 	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
