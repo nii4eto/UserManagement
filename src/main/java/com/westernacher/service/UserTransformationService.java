@@ -2,6 +2,8 @@ package com.westernacher.service;
 
 import java.time.LocalDate;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.westernacher.dto.UserDto;
 import com.westernacher.entity.UserEntity;
 
@@ -25,7 +27,7 @@ public class UserTransformationService {
 		user.setId(userDto.getId());
 		user.setFirstName(userDto.getFirstName());
 		user.setLastName(userDto.getLastName());
-		user.setDateOfBirth(LocalDate.parse(userDto.getDateOfBirth()));
+		user.setDateOfBirth(StringUtils.isNotBlank(userDto.getDateOfBirth()) ? LocalDate.parse(userDto.getDateOfBirth()) : null);
 		user.setEmail(userDto.getEmail());
 
 		return user;
