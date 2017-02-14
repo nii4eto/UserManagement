@@ -46,6 +46,11 @@ public class UserRestController {
 		}
 	}
 	
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
+	public UserDto getUserForEdit(@PathVariable Long id) {
+		return userService.findById(id);
+	}
+	
 	@RequestMapping(value = "/editUser", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateUser(@RequestBody UserDto userDto) {
 		try {

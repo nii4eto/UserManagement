@@ -16,4 +16,9 @@ public class UserController {
 	public String createUser() {
 		return "createUser";
 	}
+	
+	@RequestMapping(value = "/editUser", method = RequestMethod.GET)
+	public String editUser() {
+		return "editUser";
+	}
 }

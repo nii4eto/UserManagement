@@ -1,8 +1,11 @@
-$(document).ready(function() {
-	findAllUsers();
-	createUser();
-	redirectToHome();
-});
+var userActions = {
+	userJson: null,
+	userId: null,
+	
+	init: function(id) {
+		this.userId = id;
+	}
+};
 
 function findAllUsers() {
 	var table = $('#usersTable')
@@ -29,14 +32,12 @@ function findAllUsers() {
 									"mData" : "dateOfBirth"
 								},
 								{
-									"defaultContent" : "<button type=\"button\" class=\"btn btn-default btn-xs\" aria-label=\"Edit\">"
+									"defaultContent" : "<button type=\"submit\" onclick=\"findUserForEdit(this);\" class=\"btn btn-default btn-xs\" aria-label=\"Edit\">"
 											+ "<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></button>"
 											+ "<button type=\"submit\" onclick=\"deleteAccount(this);\" class=\"btn btn-default btn-xs deleteBtn\" aria-label=\"Delete\">"
 											+ "<span class=\"glyphicon glyphicon-trash\" aria-hidden=\"true\"></span></button>"
 								} ]
 					});
-
-	deleteAccount();
 }
 
 function createUser() {
@@ -52,6 +53,7 @@ function createUser() {
 			data : getFormData(array),
 			success : function(result) {
 				console.debug(result);
+				redirectToHome();
 			},
 			error : function(e) {
 				console.debug(e);
@@ -71,23 +73,52 @@ function getFormData(array) {
 }
 
 function redirectToHome() {
-	$('#cancel').click(function(e) {
-		$(location).attr('pathname', '/index.html')
-	});
+	$(location).attr('pathname', '/index.html');
 }
 
 function deleteAccount(btn) {
 	var id = $(btn).closest("tr").attr("id");
-	if(id == null) {
+	if (id == null) {
 		return;
 	}
-	
+
 	$.ajax({
-	    url: "/users/" + id ,
-	    type: 'DELETE',
-	    success: function(result) {
+		url : "/users/" + id,
+		type : 'DELETE',
+		success : function(result) {
 			location.reload();
 		}
 	});
+}
 
+function findUserForEdit(btn) {
+	var id = $(btn).closest("tr").attr("id");
+	if (id == null) {
+		return;
+	}
+	userActions.init(id);
+	
+	
+	window.location.href = "http://localhost:8181/editUser.html?" + id;
+}
+
+function editUser(id) {
+	$.ajax({
+		url : "/users/" + id,
+		type : "GET",
+		success : function(result) {
+
+			populate('#editUserForm', result);
+
+		},
+		error : function(e) {
+			console.debug(e);
+		}
+	});
+}
+
+function populate(frm, data) {
+	$.each(data, function(key, value) {
+		$('[name=' + key + ']', frm).val(value);
+	});
 }
