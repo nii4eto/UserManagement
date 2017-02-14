@@ -1,12 +1,3 @@
-var userActions = {
-	userJson: null,
-	userId: null,
-	
-	init: function(id) {
-		this.userId = id;
-	}
-};
-
 function findAllUsers() {
 	var table = $('#usersTable')
 			.DataTable(
@@ -40,25 +31,22 @@ function findAllUsers() {
 					});
 }
 
-function createUser() {
-	$('#createUser').click(function(e) {
-		e.preventDefault();
-
-		var array = $('#createUserForm').serializeArray();
-		var myJsonString = JSON.stringify(array);
-		$.ajax({
-			type : "POST",
-			url : "/saveUser",
-			contentType : "application/json; charset=utf-8",
-			data : getFormData(array),
-			success : function(result) {
-				console.debug(result);
-				redirectToHome();
-			},
-			error : function(e) {
-				console.debug(e);
-			}
-		});
+function saveUser() {
+	var array = $('#createUserForm').serializeArray();
+	var myJsonString = JSON.stringify(array);
+	$.ajax({
+		type : "POST",
+		url : "/saveUser",
+		contentType : "application/json; charset=utf-8",
+		data : getFormData(array),
+		success : function(result) {
+			console.debug(result);
+			redirectToHome();
+		},
+		error : function(e) {
+			console.debug("dasd");
+			console.debug(e);
+		}
 	});
 }
 
@@ -96,13 +84,11 @@ function findUserForEdit(btn) {
 	if (id == null) {
 		return;
 	}
-	userActions.init(id);
-	
-	
+
 	window.location.href = "http://localhost:8181/editUser.html?" + id;
 }
 
-function editUser(id) {
+function populateUserData(id) {
 	$.ajax({
 		url : "/users/" + id,
 		type : "GET",
@@ -110,6 +96,24 @@ function editUser(id) {
 
 			populate('#editUserForm', result);
 
+		},
+		error : function(e) {
+			console.debug(e);
+		}
+	});
+}
+
+function updateUser() {
+	var array = $('#editUserForm').serializeArray();
+	var myJsonString = JSON.stringify(array);
+	$.ajax({
+		type : "PUT",
+		url : "/editUser",
+		contentType : "application/json; charset=utf-8",
+		data : getFormData(array),
+		success : function(result) {
+			console.debug(result);
+			redirectToHome();
 		},
 		error : function(e) {
 			console.debug(e);

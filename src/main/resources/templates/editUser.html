@@ -20,7 +20,8 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-	findAllUsers();
+	var id = window.location.search.substr(1);
+	populateUserData(id);
 });</script>
 </head>
 
@@ -47,6 +48,7 @@ $(document).ready(function() {
 		<div class="row">
 			<div class="col-md-6">
 				<form action="/editUser" id="editUserForm" method="post">
+					<input type="hidden" name="id" />
 					<div class="form-group">
 						<label>First name</label> <input name="firstName" type="text"
 							class="form-control" placeholder="First name" />
@@ -63,7 +65,7 @@ $(document).ready(function() {
 						<label>Birthdate</label> <input name="dateOfBirth" type="date"
 							class="form-control" placeholder="Birthdate" />
 					</div>
-					<button type="submit" class="btn btn-success" id="createUser">Submit</button>
+					<button type="button" class="btn btn-success" id="createUser" onclick="updateUser();">Submit</button>
 					<button type="button" class="btn btn-primary" id="cancel" onclick="redirectToHome();">Cancel</button>
 				</form>
 			</div>
