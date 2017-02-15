@@ -5,7 +5,7 @@ import java.util.List;
 import com.westernacher.dto.UserDto;
 
 public interface UserService {
-	void saveUser(UserDto userDto);
+	UserDto saveUser(UserDto userDto);
 	
 	UserDto findByEmail(String email);
 	

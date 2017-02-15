@@ -1,6 +1,7 @@
 package com.westernacher.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -18,20 +19,29 @@ import com.westernacher.repository.UserRepository;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	public UserServiceImpl(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
 	@Override
-	public void saveUser(UserDto userDto) {
+	public UserDto saveUser(UserDto userDto) {
 		UserEntity user = UserTransformationService.trasformUserDtoToUser(userDto);
 		userRepository.save(user);
+
+		return userDto;
 	}
 
 	@Override
 	public UserDto findByEmail(String email) {
-		UserEntity user = userRepository.findByEmail(email);
-		UserDto userDto = prepareUserDto(user);
+		Optional<UserEntity> user = userRepository.findByEmail(email);
+		if (!user.isPresent()) {
+			return null;
+		}
 
+		UserDto userDto = prepareUserDto(user.get());
 		return userDto;
 	}
 
@@ -57,8 +67,7 @@ public class UserServiceImpl implements UserService {
 	public List<UserDto> findAllUsers() {
 		List<UserEntity> allUsersEntities = userRepository.findAll();
 
-		return allUsersEntities.stream()
-				.map(user -> UserTransformationService.transformUserEntityToUserDto(user))
+		return allUsersEntities.stream().map(user -> UserTransformationService.transformUserEntityToUserDto(user))
 				.collect(Collectors.toList());
 	}
 

@@ -31,54 +31,54 @@ function findAllUsers() {
 					});
 }
 
-function validateForm(id) {
-	var form = document.getElementById(id);
-	form.validationMessage = "All fields are required!";
-	if (form.checkValidity() == false) {
-		$('#errorMessage').show();
-        document.getElementById("errorMessage").innerHTML = form.validationMessage;
-        return false;
-    }
-	
-	return true;
-}
-
 function saveUser() {
-	if(!validateForm("createUserForm")) {
+	if (!validateForm("createUserForm")) {
 		return;
 	}
-	
-	
+
 	var array = $('#createUserForm').serializeArray();
 	var myJsonString = JSON.stringify(array);
-	$.ajax({
-		type : "POST",
-		url : "/saveUser",
-		contentType : "application/json; charset=utf-8",
-		data : getFormData(array),
-		success : function(result) {
-			console.debug(result);
-			redirectToHome();
-		},
-		error : function(e) {
-			console.debug("dasd");
-			console.debug(e);
-		}
-	});
+	$
+			.ajax({
+				type : "POST",
+				url : "/saveUser",
+				contentType : "application/json; charset=utf-8",
+				data : getFormData(array),
+				success : function(result) {
+					console.debug(result);
+					redirectToHome();
+				},
+				error : function(e) {
+					$('#errorMessage').show();
+					document.getElementById("errorMessage").innerHTML = "Account with this email is already created!";
+					console.debug(e);
+				}
+			});
 }
 
-function getFormData(array) {
-	var indexed_array = {};
+function updateUser() {
+	if (!validateForm("editUserForm")) {
+		return;
+	}
 
-	$.map(array, function(n, i) {
-		indexed_array[n['name']] = n['value'];
-	});
-
-	return JSON.stringify(indexed_array);
-}
-
-function redirectToHome() {
-	$(location).attr('pathname', '/index.html');
+	var array = $('#editUserForm').serializeArray();
+	var myJsonString = JSON.stringify(array);
+	$
+			.ajax({
+				type : "PUT",
+				url : "/editUser",
+				contentType : "application/json; charset=utf-8",
+				data : getFormData(array),
+				success : function(result) {
+					console.debug(result);
+					redirectToHome();
+				},
+				error : function(e) {
+					$('#errorMessage').show();
+					document.getElementById("errorMessage").innerHTML = "Account with this email is already created!";
+					console.debug(e);
+				}
+			});
 }
 
 function deleteAccount(btn) {
@@ -96,6 +96,32 @@ function deleteAccount(btn) {
 	});
 }
 
+function validateForm(id) {
+	var form = document.getElementById(id);
+	form.validationMessage = "All fields are required!";
+	if (form.checkValidity() == false) {
+		$('#errorMessage').show();
+		document.getElementById("errorMessage").innerHTML = form.validationMessage;
+		return false;
+	}
+
+	return true;
+}
+
+function getFormData(array) {
+	var indexed_array = {};
+
+	$.map(array, function(n, i) {
+		indexed_array[n['name']] = n['value'];
+	});
+
+	return JSON.stringify(indexed_array);
+}
+
+function redirectToHome() {
+	$(location).attr('pathname', '/index.html');
+}
+
 function findUserForEdit(btn) {
 	var id = $(btn).closest("tr").attr("id");
 	if (id == null) {
@@ -111,35 +137,13 @@ function populateUserData(id) {
 		type : "GET",
 		success : function(result) {
 
-			populate('#editUserForm', result);
+			$.each(result, function(key, value) {
+				$('[name=' + key + ']', '#editUserForm').val(value);
+			});
 
 		},
 		error : function(e) {
 			console.debug(e);
 		}
-	});
-}
-
-function updateUser() {
-	var array = $('#editUserForm').serializeArray();
-	var myJsonString = JSON.stringify(array);
-	$.ajax({
-		type : "PUT",
-		url : "/editUser",
-		contentType : "application/json; charset=utf-8",
-		data : getFormData(array),
-		success : function(result) {
-			console.debug(result);
-			redirectToHome();
-		},
-		error : function(e) {
-			console.debug(e);
-		}
-	});
-}
-
-function populate(frm, data) {
-	$.each(data, function(key, value) {
-		$('[name=' + key + ']', frm).val(value);
 	});
 }

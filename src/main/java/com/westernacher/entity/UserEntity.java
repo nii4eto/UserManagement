@@ -1,7 +1,5 @@
 package com.westernacher.entity;
 
-
-
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -24,8 +22,15 @@ public class UserEntity {
 	private String email;
 	private LocalDate dateOfBirth;
 
+	public UserEntity() {
+	}
+
+	public UserEntity(String email) {
+		this.email = email;
+	}
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
 	}
@@ -62,7 +67,7 @@ public class UserEntity {
 	}
 
 	@Column(name = "date_of_birth")
-	@Convert(converter=LocalDateAttributeConverter.class)
+	@Convert(converter = LocalDateAttributeConverter.class)
 	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -72,26 +77,26 @@ public class UserEntity {
 	}
 
 	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+	public int hashCode() {
+		int hash = 0;
+		hash += (id != null ? id.hashCode() : 0);
+		return hash;
+	}
 
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof UserEntity)) {
-            return false;
-        }
-        UserEntity other = (UserEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof UserEntity)) {
+			return false;
+		}
+		UserEntity other = (UserEntity) object;
+		if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    public String toString() {
-        return "Users[ id=" + id + " ]";
-    }
+	@Override
+	public String toString() {
+		return "Users[ id=" + id + " ]";
+	}
 }

@@ -2,69 +2,68 @@ package com.westernacher.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.westernacher.dto.UserDto;
+import com.westernacher.entity.UserEntity;
 import com.westernacher.repository.UserRepository;
 
-@RunWith(MockitoJUnitRunner.class)
-@SpringBootConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 public class UserServiceTest {
-	
-	private static final String EMAIL = "nia@gmail.com";
 
-	@InjectMocks
-    private UserServiceImpl userServiceImpl;
-	
+	private static final String EMAIL = "test@gmail.com";
+
 	@Mock
-	private UserRepository userRepo;
+	private UserServiceImpl userServiceImpl;
 
-    private UserDto userDto = new UserDto();
-    
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
-    
-    @Test
-    public void testSaveUserSuccess() {
-    	prepareUser(EMAIL);
-    	userServiceImpl.saveUser(userDto);
-    	
-    	UserDto newUserDto = userServiceImpl.findByEmail(EMAIL);
-    	
-    	if(newUserDto != null){
-    		assertNotNull(newUserDto);
-    		assertEquals(newUserDto.getEmail(), userDto.getEmail());
-    	} else {
-    		fail();
-    	}	
-    }
-    
-    @Test
-    public void testUpdateUser() {
-    	prepareUser(EMAIL);
-    	userServiceImpl.saveUser(userDto);
-    	
-    	UserDto userForUpdate = userServiceImpl.findByEmail(EMAIL);
-    	if(userForUpdate == null) {
-    		fail("User doesn't exist!");
-    	}
-    }
-    
-    private void prepareUser(String email) {
+	@Mock
+	private UserRepository userRepository;
+
+	@Before
+	public void setup() {
+		userServiceImpl = new UserServiceImpl(userRepository);
+	}
+
+	@Test
+	public void testSaveUserSuccess() {
+		UserEntity user = new UserEntity(EMAIL);
+		when(this.userRepository.save(any(UserEntity.class))).thenReturn(user);
+		
+		UserDto userDto = prepareUser(EMAIL);
+		UserDto savedUser = userServiceImpl.saveUser(userDto);
+
+		assertNotNull(savedUser);
+		assertEquals(EMAIL, savedUser.getEmail());
+	}
+	
+	@Test
+	public void testFindByEmail() {
+		UserEntity user = UserTransformationService.trasformUserDtoToUser(prepareUser(EMAIL));
+		
+		when(this.userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(user));
+		
+		UserDto userDto = prepareUser(EMAIL);
+		UserDto findByEmail = userServiceImpl.findByEmail(userDto.getEmail());
+		
+		assertEquals(EMAIL, findByEmail.getEmail());
+	}
+
+	private UserDto prepareUser(String email) {
+		UserDto userDto = new UserDto();
 		userDto.setFirstName("Nia");
 		userDto.setLastName("Doncheva");
-		userDto.setDateOfBirth("1992-07-21");
+		userDto.setDateOfBirth("2017-01-01");
 		userDto.setEmail(email);
+
+		return userDto;
 	}
 }

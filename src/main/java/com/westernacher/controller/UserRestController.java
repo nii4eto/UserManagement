@@ -29,37 +29,43 @@ public class UserRestController {
 
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<?> saveUser(@RequestBody UserDto userDto) {
-		if (userService.findByEmail(userDto.getEmail()) != null)
+		if (userService.findByEmail(userDto.getEmail()) != null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 
 		userService.saveUser(userDto);
 		return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
 		try {
 			userService.deleteUser(id);
 			return new ResponseEntity<>(HttpStatus.OK);
-		} catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@RequestMapping(value = "/usersEmail/{email}", method = RequestMethod.GET)
 	public UserDto getUserByMail(@PathVariable String email) {
 		UserDto findByEmail = userService.findByEmail(email);
 		return findByEmail;
 	}
-	
+
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public UserDto getUserForEdit(@PathVariable Long id) {
 		return userService.findById(id);
 	}
-	
+
 	@RequestMapping(value = "/editUser", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateUser(@RequestBody UserDto userDto) {
 		try {
+			UserDto findByEmail = userService.findByEmail(userDto.getEmail());
+			if (findByEmail !=null && !findByEmail.equals(userDto)) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			
 			userService.updateUser(userDto);
 			return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 		} catch (Exception e) {
