@@ -1,4 +1,4 @@
-package controler;
+package com.westernacher.controler;
 
 import org.junit.Before;
 import org.mockito.InjectMocks;

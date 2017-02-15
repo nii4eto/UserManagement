@@ -5,3 +5,7 @@
 .deleteBtn {
 	margin-left: 5px;
 }
+
+#errorMessage {
+	display: none;
+}

@@ -31,7 +31,24 @@ function findAllUsers() {
 					});
 }
 
+function validateForm(id) {
+	var form = document.getElementById(id);
+	form.validationMessage = "All fields are required!";
+	if (form.checkValidity() == false) {
+		$('#errorMessage').show();
+        document.getElementById("errorMessage").innerHTML = form.validationMessage;
+        return false;
+    }
+	
+	return true;
+}
+
 function saveUser() {
+	if(!validateForm("createUserForm")) {
+		return;
+	}
+	
+	
 	var array = $('#createUserForm').serializeArray();
 	var myJsonString = JSON.stringify(array);
 	$.ajax({

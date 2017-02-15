@@ -3,7 +3,10 @@ package com.westernacher.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.westernacher.dto.UserDto;
@@ -11,6 +14,8 @@ import com.westernacher.entity.UserEntity;
 import com.westernacher.repository.UserRepository;
 
 @Service
+@Component
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired

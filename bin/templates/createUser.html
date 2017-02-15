@@ -41,24 +41,27 @@
 		<div class="row">
 			<div class="col-md-6">
 				<form action="/saveUser" id="createUserForm" method="post">
+					<div class="alert alert-danger" id="errorMessage"></div>
 					<div class="form-group">
 						<label>First name</label> <input name="firstName" type="text"
-							class="form-control" placeholder="First name" />
+							class="form-control" placeholder="First name" required="required" />
 					</div>
 					<div class="form-group">
 						<label>First name</label> <input name="lastName" type="text"
-							class="form-control" placeholder="Last name" />
+							class="form-control" placeholder="Last name" required="required" />
 					</div>
 					<div class="form-group">
-						<label>Email</label> <input name="email" type="email"
-							class="form-control" placeholder="Email" />
+						<label>Email</label> <input name="email" type="text"
+							class="form-control" placeholder="Email" required="required" />
 					</div>
 					<div class="form-group">
 						<label>Birthdate</label> <input name="dateOfBirth" type="date"
-							class="form-control" placeholder="Birthdate" />
+							class="form-control" placeholder="Birthdate" required="required" />
 					</div>
-					<button type="button" class="btn btn-success" id="createUser" onclick="saveUser();">Submit</button>
-					<button type="button" class="btn btn-primary" id="cancel" onclick="redirectToHome();">Cancel</button>
+					<button type="button" class="btn btn-success" id="createUser"
+						onclick="saveUser();">Submit</button>
+					<button type="button" class="btn btn-primary" id="cancel"
+						onclick="redirectToHome();">Cancel</button>
 				</form>
 			</div>
 		</div>

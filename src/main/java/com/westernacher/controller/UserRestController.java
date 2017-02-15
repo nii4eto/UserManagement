@@ -46,6 +46,12 @@ public class UserRestController {
 		}
 	}
 	
+	@RequestMapping(value = "/usersEmail/{email}", method = RequestMethod.GET)
+	public UserDto getUserByMail(@PathVariable String email) {
+		UserDto findByEmail = userService.findByEmail(email);
+		return findByEmail;
+	}
+	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public UserDto getUserForEdit(@PathVariable Long id) {
 		return userService.findById(id);
