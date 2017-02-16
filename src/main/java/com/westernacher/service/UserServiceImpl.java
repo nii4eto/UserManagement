@@ -58,9 +58,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUser(UserDto userDto) {
+	public UserDto updateUser(UserDto userDto) {
 		UserEntity user = UserTransformationService.trasformUserDtoToUser(userDto);
 		userRepository.updateUser(user.getId(), user.getFirstName(), user.getLastName(), user.getDateOfBirth());
+		
+		return userDto;
 	}
 
 	@Override

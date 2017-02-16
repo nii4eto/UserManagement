@@ -30,6 +30,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.apache.commons:commons-lang3:3.5')
+	compile('com.google.code.gson:gson:2.8.0')
 	compile('javax.inject:javax.inject:1')
 	runtime ('mysql:mysql-connector-java:6.0.5')
 	testCompile('org.springframework.boot:spring-boot-starter-test')

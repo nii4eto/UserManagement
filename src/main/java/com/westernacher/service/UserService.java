@@ -15,5 +15,5 @@ public interface UserService {
 	
 	List<UserDto> findAllUsers();
 	
-	void updateUser(UserDto userDto);
+	UserDto updateUser(UserDto userDto);
 }
