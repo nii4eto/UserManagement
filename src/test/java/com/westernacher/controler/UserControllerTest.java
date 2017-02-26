@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.westernacher.controller.UserRestController;
+import com.westernacher.controller.UserController;
 import com.westernacher.dto.UserDto;
 import com.westernacher.repository.UserRepository;
 import com.westernacher.service.UserServiceImpl;
@@ -27,7 +27,7 @@ public class UserControllerTest {
 	private UserServiceImpl userServiceImpl;
 	
 	@Mock
-	private UserRestController userController;
+	private UserController userController;
 	
 	@Mock
 	private UserRepository userRepository;
